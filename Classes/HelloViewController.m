@@ -3,14 +3,36 @@
 
 @implementation HelloViewController
 
-@synthesize playButton, loginButton, player;
+@synthesize playButton, loginButton;
 
--(RDPlayer*)getPlayer
-{
-    if (player == nil) {
-        player = [HelloAppDelegate rdioInstance].player;
+- (RDPlayer *)player {
+    if (!_player) {
+        _player = [HelloAppDelegate rdioInstance].player;
     }
-    return player;
+    return _player;
+}
+
+#pragma mark - Lifecycle Methods
+
+- (void)dealloc {
+    [_player removeObserver:self forKeyPath:@"decibelLevels"];
+
+    [_leftLevelMonitor release];
+    [_rightLevelMonitor release];
+
+    [super dealloc];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [self.player addObserver:self forKeyPath:@"decibelLevels" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+
+    [self.player removeObserver:self forKeyPath:@"decibelLevels"];
 }
 
 #pragma mark -
@@ -19,9 +41,9 @@
 - (IBAction) playClicked:(id) button {
     if (!playing) {
         NSArray* keys = [@"t2742133,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
-        [[self getPlayer] playSources:keys];
+        [self.player playSources:keys];
     } else {
-        [[self getPlayer] togglePause];
+        [self.player togglePause];
     }
 }
 
@@ -42,6 +64,15 @@
     }
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([@"decibelLevels" isEqualToString:keyPath]) {
+        NSArray *levels = [change objectForKey:NSKeyValueChangeNewKey];
+
+        self.leftLevelMonitor.value = [[levels objectAtIndex:0] floatValue];
+        self.rightLevelMonitor.value = [[levels objectAtIndex:1] floatValue];
+    }
+}
 
 #pragma mark -
 #pragma mark RdioDelegate

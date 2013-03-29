@@ -7,12 +7,14 @@
     BOOL loggedIn;
     BOOL playing;
     BOOL paused;
-    RDPlayer* player;
+    RDPlayer *_player;
 }
 
 @property (nonatomic, retain) IBOutlet UIButton *playButton;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
-@property (retain) RDPlayer *player;
+
+@property (retain, nonatomic) IBOutlet UISlider *leftLevelMonitor;
+@property (retain, nonatomic) IBOutlet UISlider *rightLevelMonitor;
 
 - (IBAction) playClicked:(id) button;
 - (IBAction) loginClicked:(id) button;
