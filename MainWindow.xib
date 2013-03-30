@@ -162,6 +162,7 @@
 							<string key="NSFrame">{{63, 197}, {195, 23}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="999384692"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
 							<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -172,7 +173,7 @@
 							<int key="IBUIContentHorizontalAlignment">0</int>
 							<int key="IBUIContentVerticalAlignment">0</int>
 							<float key="IBUIValue">-10</float>
-							<float key="IBUIMinValue">-20</float>
+							<float key="IBUIMinValue">-120</float>
 							<float key="IBUIMaxValue">0.0</float>
 						</object>
 						<object class="IBUISlider" id="999384692">
@@ -191,7 +192,7 @@
 							<int key="IBUIContentHorizontalAlignment">0</int>
 							<int key="IBUIContentVerticalAlignment">0</int>
 							<float key="IBUIValue">-10</float>
-							<float key="IBUIMinValue">-20</float>
+							<float key="IBUIMinValue">-120</float>
 							<float key="IBUIMaxValue">0.0</float>
 						</object>
 					</object>

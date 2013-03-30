@@ -23,14 +23,14 @@
     [super dealloc];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 
     [self.player addObserver:self forKeyPath:@"decibelLevels" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
 
     [self.player removeObserver:self forKeyPath:@"decibelLevels"];
 }
@@ -68,10 +68,16 @@
 {
     if ([@"decibelLevels" isEqualToString:keyPath]) {
         NSArray *levels = [change objectForKey:NSKeyValueChangeNewKey];
-
-        self.leftLevelMonitor.value = [[levels objectAtIndex:0] floatValue];
-        self.rightLevelMonitor.value = [[levels objectAtIndex:1] floatValue];
+        [self performSelectorOnMainThread:@selector(setMonitors:) withObject:levels waitUntilDone:NO];
     }
+}
+
+- (void)setMonitors:(NSArray *)levels
+{
+    self.leftLevelMonitor.value = [levels[0] floatValue];
+    self.rightLevelMonitor.value = [levels[1] floatValue];
+    
+    NSLog(@"%f %f", self.leftLevelMonitor.value, self.rightLevelMonitor.value);
 }
 
 #pragma mark -
