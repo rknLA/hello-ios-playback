@@ -20,6 +20,11 @@
     [_leftLevelMonitor release];
     [_rightLevelMonitor release];
 
+    [_position release];
+    [_duration release];
+
+    [_positionSlider release];
+
     [super dealloc];
 }
 
@@ -27,6 +32,8 @@
     [super viewDidAppear:animated];
 
     [self.player addObserver:self forKeyPath:@"decibelLevels" options:NSKeyValueObservingOptionNew context:nil];
+    [self.player addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionInitial context:nil];
+    [self.player addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial context:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -55,6 +62,21 @@
     }
 }
 
+- (IBAction)seekStarted:(id)sender {
+    if (!playing) return;
+
+    seeking = YES;
+}
+
+- (IBAction)seekFinished:(id)sender {
+    if (!playing) return;
+
+    seeking = NO;
+    
+    NSTimeInterval position = self.positionSlider.value * self.player.duration;
+    [self.player seekToPosition:position];
+}
+
 - (void) setLoggedIn:(BOOL)logged_in {
     loggedIn = logged_in;
     if (logged_in) {
@@ -70,6 +92,16 @@
         NSArray *levels = [change objectForKey:NSKeyValueChangeNewKey];
         [self performSelectorOnMainThread:@selector(setMonitors:) withObject:levels waitUntilDone:NO];
     }
+    else if ([@"position" isEqualToString:keyPath] || [@"duration" isEqualToString:keyPath]) {
+        if (seeking) return;
+
+        NSTimeInterval position = self.player.position;
+        NSTimeInterval duration = self.player.duration;
+
+        self.position.text = [self playerTimeForTime:position];
+        self.duration.text = [self playerTimeForTime:duration];
+        self.positionSlider.value = position / duration;
+    }
 }
 
 - (void)setMonitors:(NSArray *)levels
@@ -78,6 +110,14 @@
     self.rightLevelMonitor.value = [levels[1] floatValue];
     
     NSLog(@"%f %f", self.leftLevelMonitor.value, self.rightLevelMonitor.value);
+}
+
+- (NSString *)playerTimeForTime:(NSTimeInterval)interval
+{
+    NSInteger min = (NSInteger) interval / 60;
+    NSInteger sec = (NSInteger) interval % 60;
+
+    return [NSString stringWithFormat:@"%d:%02d", min, sec];
 }
 
 #pragma mark -

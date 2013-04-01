@@ -6,6 +6,7 @@
     UIButton *loginButton;
     BOOL loggedIn;
     BOOL playing;
+    BOOL seeking;
     BOOL paused;
     RDPlayer *_player;
 }
@@ -16,7 +17,14 @@
 @property (retain, nonatomic) IBOutlet UISlider *leftLevelMonitor;
 @property (retain, nonatomic) IBOutlet UISlider *rightLevelMonitor;
 
-- (IBAction) playClicked:(id) button;
-- (IBAction) loginClicked:(id) button;
+@property (retain, nonatomic) IBOutlet UISlider *positionSlider;
+@property (retain, nonatomic) IBOutlet UILabel *position;
+@property (retain, nonatomic) IBOutlet UILabel *duration;
+
+- (IBAction)playClicked:(id) button;
+- (IBAction)loginClicked:(id) button;
+
+- (IBAction)seekStarted:(id)sender;
+- (IBAction)seekFinished:(id)sender;
 
 @end
