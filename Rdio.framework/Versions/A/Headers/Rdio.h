@@ -50,6 +50,7 @@
   RDAuthViewController *authViewController_;
   UIViewController *currentController_;
   id<RdioDelegate> delegate_;
+  BOOL authorizingFromToken_;
 }
 
 /**
@@ -69,12 +70,19 @@
 
 /**
  * Attempts to reauthorize using an access token from a previous session.
- * If this process fails the user is presented with a modal login dialog.
+ * If this process fails, it calls the `rdioAuthorizationFailed:` method of the RdioDelegate passed to `initWithConsumerKey:`.
+ * Calling this method is the same as calling `authorizeUsingAccessToken:fromController:` with the controller set to `nil`.
  * @param accessToken A token received from a previous <code>rdioDidAuthorizeUser:withAccessToken:</code> delegate call
- * @param currentController Controller from which a login view might be launched
  */
-- (void)authorizeUsingAccessToken:(NSString *)accessToken 
-                   fromController:(UIViewController *)currentController;
+- (void)authorizeUsingAccessToken:(NSString *)accessToken;
+
+/**
+ * Attempts to reauthorize using an access token from a previous session.
+ * If this process fails and the `currentController` is not nil, the user is presented with a modal login view as
+ * if you had called `authorizeFromController:`
+ * If `currentController` is nil, this method behaves the same way as `authorizeUsingAccessToken:`.
+ */
+- (void)authorizeUsingAccessToken:(NSString *)accessToken fromController:(UIViewController *)currentController;
 
 /**
  * Logs out the current user.  Calls <code>rdioDidLogout</code> on delegate on completion.  Clients are responsible
@@ -91,6 +99,13 @@
 - (RDAPIRequest *)callAPIMethod:(NSString *)method 
                  withParameters:(NSDictionary *)params 
                        delegate:(id<RDAPIRequestDelegate>)delegate;
+
+/**
+ * Used by web or Rdio to complete the User Authentication flow.
+ * You should only use this method inside your App Delegate's url handler.
+ * @param url The url that got passed into `application:openURL:sourceApplication:annotation:`.
+ */
+- (BOOL)handleOpenURL:(NSURL *)url;
 
 /**
  * Delegate used to receive Rdio API state changes.
@@ -126,8 +141,18 @@
 - (void)rdioDidAuthorizeUser:(NSDictionary *)user withAccessToken:(NSString *)accessToken;
 
 /**
- * Called if authorization cannot be completed due to network or server problems.
- * The user will be notified from the login view before this method is called.
+ * Called if authorization cannot be completed due to network, server, or token problems.
+ *
+ * If you used `authorizeFromController` to inititate authorization, the user will be notified from the
+ * login view before this method is called.
+ *
+ * If you called `authorizeUsingAccessToken:fromController:` with a non-nil fromController, the SDK will
+ * respond to an error by popping up the login view without calling this method.  Subsequent failures within
+ * the same flow will be handled as if you had called `authorizeFromController`.
+ *
+ * If you called `authorizeUsingAccessToken:` or provided a nil fromController, this method will be called
+ * without any notification to the end user.  In this circumstance, it's up to you to handle any changes
+ * this might imply for your UI.
  * @param error A message describing what went wrong.
  */
 - (void)rdioAuthorizationFailed:(NSString *)error;

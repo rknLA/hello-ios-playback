@@ -23,7 +23,7 @@ typedef enum {
 /**
  * Player delegate
  */
-@protocol RDPlayerDelegate
+@protocol RDPlayerDelegate <NSObject>
 
 /**
  * Notification that the current user has started playing with Rdio from 
@@ -36,6 +36,26 @@ typedef enum {
  * Notification that the player has changed states. See <code>RDPlayerState</code>.
  */
 -(void)rdioPlayerChangedFromState:(RDPlayerState)oldState toState:(RDPlayerState)newState;
+
+@optional
+
+/**
+ * Notification that the play queue has been updated.
+ *
+ * For example, when new tracks are added using the queueSource and queueSources
+ * methods.
+ */
+-(void)rdioPlayerQueueDidChange;
+
+/**
+ * Notification that the specified track did not successfully finish streaming.
+ *
+ * If this method is not implemented, we will automatically skip to the next track.
+ *
+ * @return <code>YES</code> if you want to override this behavior.
+ */
+- (BOOL)rdioPlayerCouldNotStreamTrack:(NSString *)trackKey;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,9 +67,6 @@ typedef enum {
 /**
  * Responsible for playback. Handles playing and enqueueing track sources, 
  * advancing to the next track, logging plays with the server, etc.
- *
- * For now only track keys are supported, but future versions will accept 
- * album and playlist keys or dictionary objects.
  *
  * To observe track changes, position changes, etc., use KVO. For example:
  * \code
@@ -88,9 +105,14 @@ typedef enum {
 }
 
 /**
- * Starts playing a track key, such as "t1232".
+ * Starts playing a source key, such as "t1232".
+ *
+ * Supported source keys include tracks, albums, playlists, and artist stations.
+ *
  * Track keys can be found by calling web service API methods.
  * Objects such as Album contain a 'trackKeys' property.
+ *
+ * @param sourceKey a source key such as "t1232"
  */
 -(void)playSource:(NSString *)sourceKey;
 
@@ -98,26 +120,47 @@ typedef enum {
  * Play through a list of track keys, pre-buffering and automatically advancing
  * between songs.
  *
- * Note: full queue support coming soon.
+ * Supported source keys include tracks, albums, playlists, and artist stations.
+ *
+ * @param sourceKeys list of source keys
  */
 -(void)playSources:(NSArray *)sourceKeys;
 
 /**
- * Advances to the next track in the trackKeys array.
- * This method only works within the array passed to the <code>playSources:</code> method.
+ * Play the next track in the \ref RDPlayer::trackKeys "trackKeys" array.
  */
 -(void)next;
 
 /**
- * Play the previous track in the trackKeys array. 
- * This method only works within a list passed to the <code>playSources:</code> method.
+ * Play the previous track in the \ref RDPlayer::trackKeys "trackKeys" array.
  */
 -(void)previous;
 
 /**
+ * Play the track at a specific index in the \ref RDPlayer::trackKeys "trackKeys" array.
+ *
+ * @param index the index of the desired track
+ * @return NO if the index is out of range
+ */
+-(BOOL)skipToIndex:(NSUInteger)index;
+
+/**
  * Continues playing the current track
+ *
+ * This is the same as calling RDPlayer::playAndRestart:YES
  */
 - (void)play;
+
+/**
+ * Continues playing the current track with an option to restart the track if
+ * it's already playing
+ *
+ * If the player is already playing, setting shouldRestart to YES will restart
+ * the track from the begining.
+ *
+ * @param shouldRestart if the player should restart the currently playing track
+ */
+- (void)playAndRestart:(BOOL)shouldRestart;
 
 /**
  * Toggles paused state.
@@ -125,7 +168,7 @@ typedef enum {
 - (void)togglePause;
 
 /**
- * Stops playback and release resources.
+ * Stops playback and releases resources.
  */
 - (void)stop;
 
@@ -134,6 +177,45 @@ typedef enum {
  * @param positionInSeconds position to seek to, in seconds
  */
 - (void)seekToPosition:(double)positionInSeconds;
+
+/**
+ * Add a source key to the end of the existing play queue
+ *
+ * Supported source keys include tracks, albums, playlists, and artist stations.
+ *
+ * @param sourceKey A source key, such as "t1232"
+ */
+- (void)queueSource:(NSString*)sourceKey;
+
+/**
+ * Add the list of source keys to the end of the existing play queue
+ *
+ * Supported source keys include tracks, albums, playlists, and artist stations.
+ *
+ * @param sourceKeys List of source keys, such as "t1232"
+ */
+- (void)queueSources:(NSArray*)sourceKeys;
+
+/**
+ * Replace the play queue with a different list of track keys.
+ *
+ * This method replaces the entire play queue much like RDPlayer::playSources:.
+ * Unlike RDPlayer::playSources:, this method does not stop playback of the
+ * current track.
+ *
+ * If the index does not point at the currently playing track, the method will
+ * not update the queue and will return NO.
+ *
+ * @param sourceKeys List of track keys, such as "t1232"
+ * @param index Index of the currently playing track
+ * @return NO if the queue was not updated
+ */
+- (BOOL)updateQueue:(NSArray*)sourceKeys withCurrentTrackIndex:(int)index;
+
+/**
+ * Stops playback, releases resources and resets the queue.
+ */
+- (void)resetQueue;
 
 /**
  * Current playback state.
@@ -156,12 +238,12 @@ typedef enum {
 @property (nonatomic, readonly) NSString *currentTrack;
 
 /**
- * Index in the trackKeys array that is currently playing.
+ * Index in the \ref RDPlayer::trackKeys "trackKeys" array that is currently playing.
  */
 @property (nonatomic, readonly) int currentTrackIndex;
 
 /**
- * List of keys passed to playSources:
+ * List of track keys that represents the play queue
  */
 @property (nonatomic, readonly) NSArray *trackKeys;
 
@@ -169,6 +251,12 @@ typedef enum {
  * Delegate used to receive player state changes.
  */
 @property (nonatomic, assign) id<RDPlayerDelegate> delegate;
+
+/**
+ * Decibel metering information (iOS 6 only).
+ * This will *not* fire on the main thread.
+ */
+@property (nonatomic, retain, readonly) NSArray *decibelLevels;
 
 @end
 

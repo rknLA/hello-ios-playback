@@ -24,6 +24,15 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>rdioYOUR_CONSUMER_KEY</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 </dict>

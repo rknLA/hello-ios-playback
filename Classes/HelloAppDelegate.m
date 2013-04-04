@@ -38,4 +38,13 @@
 }
 
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  if ([rdio handleOpenURL:url]) {
+    return YES;
+  }
+  return NO;
+}
+
+
 @end
