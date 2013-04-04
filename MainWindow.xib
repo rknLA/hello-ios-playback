@@ -43,10 +43,13 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIWindow" id="380026005">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">1316</int>
 				<object class="NSPSMatrix" key="NSFrameMatrix"/>
 				<string key="NSFrameSize">{320, 480}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MSAxIDEAA</bytes>
@@ -59,7 +62,7 @@
 			</object>
 			<object class="IBUIViewController" id="746152819">
 				<object class="IBUIView" key="IBUIView" id="202294392">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">274</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -68,6 +71,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{20, 20}, {280, 37}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="470951757"/>
 							<bool key="IBUIOpaque">NO</bool>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -104,6 +108,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{20, 65}, {280, 37}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="506958486"/>
 							<bool key="IBUIOpaque">NO</bool>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -125,6 +130,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{88, 110}, {144, 21}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="399910818"/>
 							<string key="NSReuseIdentifierKey">_NS:173</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -156,6 +162,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{63, 197}, {195, 23}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="77309343"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -166,15 +173,13 @@
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							<int key="IBUIContentHorizontalAlignment">0</int>
 							<int key="IBUIContentVerticalAlignment">0</int>
-							<float key="IBUIValue">-10</float>
-							<float key="IBUIMinValue">-120</float>
-							<float key="IBUIMaxValue">0.0</float>
 						</object>
 						<object class="IBUISlider" id="999384692">
 							<reference key="NSNextResponder" ref="202294392"/>
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{63, 237}, {195, 23}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="407574239"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -185,15 +190,13 @@
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							<int key="IBUIContentHorizontalAlignment">0</int>
 							<int key="IBUIContentVerticalAlignment">0</int>
-							<float key="IBUIValue">-10</float>
-							<float key="IBUIMinValue">-120</float>
-							<float key="IBUIMaxValue">0.0</float>
 						</object>
 						<object class="IBUILabel" id="399910818">
 							<reference key="NSNextResponder" ref="202294392"/>
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{20, 197}, {15, 21}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="469041985"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -214,6 +217,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{20, 237}, {17, 21}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="999384692"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -234,6 +238,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{63, 333}, {195, 23}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="14426034"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -248,6 +253,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{20, 333}, {37, 21}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="206723993"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
@@ -268,6 +274,8 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{264, 333}, {36, 21}}</string>
 							<reference key="NSSuperview" ref="202294392"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="IBUIOpaque">NO</bool>
 							<bool key="IBUIClipsSubviews">YES</bool>
@@ -285,6 +293,8 @@
 						</object>
 					</object>
 					<string key="NSFrame">{{0, 20}, {320, 460}}</string>
+					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="354428947"/>
 					<object class="NSColor" key="IBUIBackgroundColor">
 						<int key="NSColorSpace">3</int>
@@ -712,21 +722,21 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>currentTime</string>
 							<string>duration</string>
 							<string>leftLevelMonitor</string>
 							<string>loginButton</string>
 							<string>playButton</string>
+							<string>position</string>
 							<string>positionSlider</string>
 							<string>rightLevelMonitor</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UILabel</string>
-							<string>UILabel</string>
 							<string>UISlider</string>
 							<string>UIButton</string>
 							<string>UIButton</string>
+							<string>UILabel</string>
 							<string>UISlider</string>
 							<string>UISlider</string>
 						</object>
@@ -735,20 +745,16 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>currentTime</string>
 							<string>duration</string>
 							<string>leftLevelMonitor</string>
 							<string>loginButton</string>
 							<string>playButton</string>
+							<string>position</string>
 							<string>positionSlider</string>
 							<string>rightLevelMonitor</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">currentTime</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">duration</string>
 								<string key="candidateClassName">UILabel</string>
@@ -764,6 +770,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">playButton</string>
 								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">position</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">positionSlider</string>

@@ -106,9 +106,12 @@
 
 - (void)setMonitors:(NSArray *)levels
 {
-    self.leftLevelMonitor.value = [levels[0] floatValue];
-    self.rightLevelMonitor.value = [levels[1] floatValue];
-    
+    double leftLinear = pow(10, (0.05 * [levels[0] floatValue]));
+    double rightLinear = pow(10, (0.05 * [levels[1] floatValue]));
+
+    self.leftLevelMonitor.value = leftLinear;
+    self.rightLevelMonitor.value = rightLinear;
+
     NSLog(@"%f %f", self.leftLevelMonitor.value, self.rightLevelMonitor.value);
 }
 
