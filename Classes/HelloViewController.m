@@ -111,8 +111,6 @@
 
     self.leftLevelMonitor.value = leftLinear;
     self.rightLevelMonitor.value = rightLinear;
-
-    NSLog(@"%f %f", self.leftLevelMonitor.value, self.rightLevelMonitor.value);
 }
 
 - (NSString *)playerTimeForTime:(NSTimeInterval)interval
