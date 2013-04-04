@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A96047C170DFDBE006623BD /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96047B170DFDBE006623BD /* Rdio.framework */; };
+		0AB80509170E18AC00B4CFC4 /* RdioSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB80508170E18AC00B4CFC4 /* RdioSearchViewController.m */; };
+		0AB8050B170E19F200B4CFC4 /* RdioSearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AB8050A170E19F200B4CFC4 /* RdioSearchView.xib */; };
 		1D3623260D0F684500981E51 /* HelloAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelloAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -26,6 +28,9 @@
 
 /* Begin PBXFileReference section */
 		0A96047B170DFDBE006623BD /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
+		0AB80507170E18AC00B4CFC4 /* RdioSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RdioSearchViewController.h; sourceTree = "<group>"; };
+		0AB80508170E18AC00B4CFC4 /* RdioSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RdioSearchViewController.m; sourceTree = "<group>"; };
+		0AB8050A170E19F200B4CFC4 /* RdioSearchView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RdioSearchView.xib; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* HelloAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* HelloAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloAppDelegate.m; sourceTree = "<group>"; };
@@ -77,6 +82,8 @@
 				3C4AE6CE13FF4E6D003C118B /* HelloViewController.m */,
 				1D3623240D0F684500981E51 /* HelloAppDelegate.h */,
 				1D3623250D0F684500981E51 /* HelloAppDelegate.m */,
+				0AB80507170E18AC00B4CFC4 /* RdioSearchViewController.h */,
+				0AB80508170E18AC00B4CFC4 /* RdioSearchViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -119,6 +126,7 @@
 			children = (
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Hello-Info.plist */,
+				0AB8050A170E19F200B4CFC4 /* RdioSearchView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -194,6 +202,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				3C7DEC6D142178F50033BD61 /* Icon.png in Resources */,
+				0AB8050B170E19F200B4CFC4 /* RdioSearchView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +216,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* HelloAppDelegate.m in Sources */,
 				3C4AE6CF13FF4E6D003C118B /* HelloViewController.m in Sources */,
+				0AB80509170E18AC00B4CFC4 /* RdioSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

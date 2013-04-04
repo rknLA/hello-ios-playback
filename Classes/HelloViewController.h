@@ -4,6 +4,9 @@
 @interface HelloViewController : UIViewController<RdioDelegate,RDPlayerDelegate> {
     UIButton *playButton;
     UIButton *loginButton;
+    UIButton *nextButton;
+    UIButton *previousButton;
+    UIButton *searchButton;
     BOOL loggedIn;
     BOOL playing;
     BOOL seeking;
@@ -13,6 +16,9 @@
 
 @property (nonatomic, retain) IBOutlet UIButton *playButton;
 @property (nonatomic, retain) IBOutlet UIButton *loginButton;
+@property (nonatomic, retain) IBOutlet UIButton *nextButton;
+@property (nonatomic, retain) IBOutlet UIButton *previousButton;
+@property (nonatomic, retain) IBOutlet UIButton *searchButton;
 
 @property (retain, nonatomic) IBOutlet UISlider *leftLevelMonitor;
 @property (retain, nonatomic) IBOutlet UISlider *rightLevelMonitor;
@@ -23,6 +29,9 @@
 
 - (IBAction)playClicked:(id) button;
 - (IBAction)loginClicked:(id) button;
+- (IBAction)nextClicked:(id)sender;
+- (IBAction)previousClicked:(id)sender;
+- (IBAction)searchClicked:(id)sender;
 
 - (IBAction)seekStarted:(id)sender;
 - (IBAction)seekFinished:(id)sender;

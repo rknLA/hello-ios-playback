@@ -1,9 +1,10 @@
 #import "HelloViewController.h"
 #import "HelloAppDelegate.h"
+#import "RdioSearchViewController.h"
 
 @implementation HelloViewController
 
-@synthesize playButton, loginButton;
+@synthesize playButton, loginButton, nextButton, previousButton, searchButton;
 
 - (RDPlayer *)player {
     if (!_player) {
@@ -60,6 +61,22 @@
     } else {
         [[HelloAppDelegate rdioInstance] authorizeFromController:self];
     }
+}
+
+- (IBAction)nextClicked:(id)sender
+{
+  [self.player next];
+}
+
+- (IBAction)previousClicked:(id)sender
+{
+  [self.player previous];
+}
+
+- (IBAction)searchClicked:(id)sender
+{
+  RdioSearchViewController *searchView = [[RdioSearchViewController alloc] initWithNibName:@"RdioSearchView" bundle:[NSBundle mainBundle]];
+  [self presentViewController:searchView animated:YES completion:nil];
 }
 
 - (IBAction)seekStarted:(id)sender {
