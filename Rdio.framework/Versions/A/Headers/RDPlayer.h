@@ -5,6 +5,8 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <CoreMedia/CoreMedia.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -218,6 +220,49 @@ typedef enum {
 - (void)resetQueue;
 
 /**
+ * Analagous to AVPlayer's method of the same name.
+ * See https://developer.apple.com/library/mac/#documentation/AVFoundation/Reference/AVPlayer_Class/Reference/Reference.html#//apple_ref/doc/uid/TP40009530-CH1-SW7 for details.
+ *
+ * @param interval The interval of invocation of the block during normal playback, according to progress of the current time of the player.
+ * @param queue A serial queue onto which block should be enqueued.
+ * @param block
+ * The block to be invoked periodically.
+ * The block takes a single parameter:
+ *   time
+ *     The time at which the block is invoked.
+ */
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time) )block;
+
+/**
+ * Analagous to AVPlayer's method of the same name.
+ *
+ * Remove a time observer added by addPeriodicTimeObserverForInterval.
+ *
+ * @param observer The opaque object returned by addPeriodicTimeObserverForInterval.
+ */
+- (void)removeTimeObserver:(id)observer;
+
+/**
+ * Similar to -addPeriodicTimeObserverForInterval:, this method calls back the passed in block with updated audio power levels.
+ *
+ * @param interval The interval of invocation of the block during normal playback, according to progress of the current time of the player.
+ * @param queue A serial queue onto which block should be enqueued.
+ * @param block
+ * The block to be invoked periodically.
+ * The block takes a single parameter:
+ *   levelsArray
+ *     An two item array of power levels.  The left channel's levels are in the first object, and the right channel's are in the second.
+ */
+- (id)addPeriodicLevelObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(NSArray *levelsArray))block;
+
+/**
+ * Remove a level observer added by addPeriodicLevelObserverForInterval.
+ *
+ * @param observer The opaque object returned by addPeriodicLevelObserverForInterval.
+ */
+- (void)removeLevelObserver:(id)observer;
+
+/**
  * Current playback state.
  */
 @property (nonatomic, readonly) RDPlayerState state;
@@ -255,6 +300,18 @@ typedef enum {
 /**
  * Decibel metering information (iOS 6 only).
  * This will *not* fire on the main thread.
+ *
+ * This property contains an array of two float values that contain the current sound output level in decibels.
+ * The values are range from -120.0dB (no sound) to 0.0dB (clipping).
+ * The first item is the level for the left channel, and the second item is the level for the right channel.
+ *
+ * Note that these values are in dB units, which means they're inherently logarithmic in scale.
+ * If you're using this information to drive a `UISlider` or similar linear object, you'll probably want
+ * to convert these values to a linear scale.
+ *
+ * For example, this line will convert the left channel's power output from the decibel scale
+ * to a value between 0.0 and 1.0:
+ * `double linear = pow(10, (0.05 * [decibelLevels[0] floatValue]));`
  */
 @property (nonatomic, retain, readonly) NSArray *decibelLevels;
 

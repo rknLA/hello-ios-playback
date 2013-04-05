@@ -12,6 +12,9 @@
     BOOL seeking;
     BOOL paused;
     RDPlayer *_player;
+
+    id timeObserver;
+    id levelObserver;
 }
 
 @property (nonatomic, retain) IBOutlet UIButton *playButton;

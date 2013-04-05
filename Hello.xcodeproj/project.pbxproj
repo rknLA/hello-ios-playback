@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A96047C170DFDBE006623BD /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A96047B170DFDBE006623BD /* Rdio.framework */; };
+		0A901948170F6F2400E51565 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A901947170F6F2400E51565 /* CoreMedia.framework */; };
+		0A901953170F7B8B00E51565 /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A901952170F7B8B00E51565 /* Rdio.framework */; };
 		0AB80509170E18AC00B4CFC4 /* RdioSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB80508170E18AC00B4CFC4 /* RdioSearchViewController.m */; };
 		0AB8050B170E19F200B4CFC4 /* RdioSearchView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AB8050A170E19F200B4CFC4 /* RdioSearchView.xib */; };
 		1D3623260D0F684500981E51 /* HelloAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelloAppDelegate.m */; };
@@ -27,7 +28,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0A96047B170DFDBE006623BD /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
+		0A901947170F6F2400E51565 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		0A90194F170F768C00E51565 /* ANAudioPowerMeterProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ANAudioPowerMeterProcessor.m; sourceTree = "<group>"; };
+		0A901950170F768C00E51565 /* ANAudioPowerMeterProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ANAudioPowerMeterProcessor.h; sourceTree = "<group>"; };
+		0A901952170F7B8B00E51565 /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
 		0AB80507170E18AC00B4CFC4 /* RdioSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RdioSearchViewController.h; sourceTree = "<group>"; };
 		0AB80508170E18AC00B4CFC4 /* RdioSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RdioSearchViewController.m; sourceTree = "<group>"; };
 		0AB8050A170E19F200B4CFC4 /* RdioSearchView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RdioSearchView.xib; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A901948170F6F2400E51565 /* CoreMedia.framework in Frameworks */,
 				478E189C170A220300AF7BE7 /* AVFoundation.framework in Frameworks */,
 				478E189A170A21FC00AF7BE7 /* MediaToolbox.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -68,7 +73,7 @@
 				3C4AE62813FF3B99003C118B /* CFNetwork.framework in Frameworks */,
 				3C4AE62C13FF40D8003C118B /* SystemConfiguration.framework in Frameworks */,
 				3C4AE63013FF40E4003C118B /* Security.framework in Frameworks */,
-				0A96047C170DFDBE006623BD /* Rdio.framework in Frameworks */,
+				0A901953170F7B8B00E51565 /* Rdio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +118,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0A90194F170F768C00E51565 /* ANAudioPowerMeterProcessor.m */,
+				0A901950170F768C00E51565 /* ANAudioPowerMeterProcessor.h */,
 				32CA4F630368D1EE00C91783 /* Hello_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 				3C4AE65E13FF42D7003C118B /* ConsumerCredentials.h */,
@@ -134,7 +141,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0A96047B170DFDBE006623BD /* Rdio.framework */,
+				0A901952170F7B8B00E51565 /* Rdio.framework */,
+				0A901947170F6F2400E51565 /* CoreMedia.framework */,
 				478E189B170A220300AF7BE7 /* AVFoundation.framework */,
 				478E1899170A21FC00AF7BE7 /* MediaToolbox.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
