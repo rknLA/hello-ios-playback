@@ -19,8 +19,6 @@
 #pragma mark - Lifecycle Methods
 
 - (void)dealloc {
-    [_player removeObserver:self forKeyPath:@"decibelLevels"];
-
     [_leftLevelMonitor release];
     [_rightLevelMonitor release];
 
@@ -32,10 +30,16 @@
     [super dealloc];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Zero out our position
+    [self positionUpdated:nil];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-    [self.player addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionInitial context:nil];
 
     levelObserver = [self.player addPeriodicLevelObserverForInterval:CMTimeMake(50, 100) queue:NULL usingBlock:^(NSArray *levelsArray) {
       NSNumber *left = [NSNumber numberWithDouble:((ANAudioPowerMeterProcessor *)levelsArray[0]).averagePowerDB];
@@ -53,8 +57,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-
-    [self.player removeObserver:self forKeyPath:@"decibelLevels"];
 
     [self.player removeLevelObserver:levelObserver];
     [self.player removeTimeObserver:timeObserver];
@@ -115,30 +117,12 @@
     [self.player seekToPosition:position];
 }
 
-- (void) setLoggedIn:(BOOL)logged_in {
+- (void)setLoggedIn:(BOOL)logged_in {
     loggedIn = logged_in;
     if (logged_in) {
         [loginButton setTitle:@"Log Out" forState: UIControlStateNormal];
     } else {
         [loginButton setTitle:@"Log In" forState: UIControlStateNormal];
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([@"decibelLevels" isEqualToString:keyPath]) {
-        NSArray *levels = [change objectForKey:NSKeyValueChangeNewKey];
-        [self performSelectorOnMainThread:@selector(setMonitors:) withObject:levels waitUntilDone:NO];
-    }
-    else if ([@"position" isEqualToString:keyPath] || [@"duration" isEqualToString:keyPath]) {
-        if (seeking) return;
-
-        NSTimeInterval position = self.player.position;
-        NSTimeInterval duration = self.player.duration;
-
-        self.position.text = [self playerTimeForTime:position];
-        self.duration.text = [self playerTimeForTime:duration];
-        self.positionSlider.value = position / duration;
     }
 }
 
