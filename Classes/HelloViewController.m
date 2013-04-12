@@ -1,9 +1,42 @@
 #import "HelloViewController.h"
 #import "HelloAppDelegate.h"
 
+@interface HelloViewController() {
+    NSString *trackOne, *trackTwo, *trackThree;
+}
+@end
+
 @implementation HelloViewController
 
 @synthesize playButton, loginButton, player;
+
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    trackOne = @"t2742133";
+    trackTwo = @"t1992210";
+    trackThree = @"t7418766";
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[self getPlayer] addObserver:self forKeyPath:@"currentTrack" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    [[self getPlayer] addObserver:self forKeyPath:@"currentTrackIndex" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    [[self getPlayer] addObserver:self forKeyPath:@"position" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    id oldValue = change[NSKeyValueChangeOldKey];
+    id newValue = change[NSKeyValueChangeNewKey];
+    
+    NSLog(@"%@ changed from %@ to %@", keyPath, oldValue, newValue);
+}
 
 -(RDPlayer*)getPlayer
 {
@@ -18,8 +51,7 @@
 
 - (IBAction) playClicked:(id) button {
     if (!playing) {
-        NSArray* keys = [@"t2742133,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
-        [[self getPlayer] playSources:keys];
+        [[self getPlayer] playSources:@[trackOne, trackTwo, trackThree]];
     } else {
         [[self getPlayer] togglePause];
     }
@@ -65,7 +97,6 @@
 
 #pragma mark -
 #pragma mark RDPlayerDelegate
-
 - (BOOL) rdioIsPlayingElsewhere {
     // let the Rdio framework tell the user.
     return NO;
@@ -79,6 +110,11 @@
     } else {
         [playButton setTitle:@"Pause" forState:UIControlStateNormal];
     }
+}
+
+- (void)rdioPlayerQueueDidChange
+{
+    
 }
 
 @end
