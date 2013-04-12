@@ -2,6 +2,7 @@
 #import "HelloAppDelegate.h"
 
 @interface HelloViewController() {
+    NSArray *readyToPlay;
     NSString *trackOne, *trackTwo, *trackThree;
 }
 @end
@@ -17,6 +18,9 @@
     trackOne = @"t2742133";
     trackTwo = @"t1992210";
     trackThree = @"t7418766";
+    
+    // No songs are ready to play. I expect the player to pause before playing the first one.
+    readyToPlay = [[NSArray alloc] init];
 }
 
 
@@ -109,6 +113,22 @@
         [playButton setTitle:@"Play" forState:UIControlStateNormal];
     } else {
         [playButton setTitle:@"Pause" forState:UIControlStateNormal];
+    }
+    
+    NSLog(@"Tracks we are ready to play include %@", readyToPlay);
+    
+    NSString *currentTrack = [[self getPlayer] currentTrack];
+    NSLog(@"currentTrack is %@", currentTrack);
+    
+    if (![currentTrack isEqual:[NSNull null]] && ![readyToPlay containsObject:currentTrack]) {
+        if (playing && !paused) {
+            NSLog(@"We're not ready to play track %@, so I'm pausing the player.", currentTrack);
+            [[self getPlayer] togglePause];
+        } else {
+            NSLog(@"We're not ready to play track %@, but the player is already paused, so it's all good.", currentTrack);
+        }
+    } else {
+        NSLog(@"We're ready to play track %@, so I won't pause the player.", currentTrack);
     }
 }
 
