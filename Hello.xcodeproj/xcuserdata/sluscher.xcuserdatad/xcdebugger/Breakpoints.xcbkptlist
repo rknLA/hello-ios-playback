@@ -12,7 +12,9 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "135"
-         endingLineNumber = "135">
+         endingLineNumber = "135"
+         landmarkName = "@implementation HelloViewController"
+         landmarkType = "3">
          <Actions>
             <BreakpointActionProxy
                ActionType = "Xcode.BreakpointAction.DebuggerCommand">
@@ -33,11 +35,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Classes/HelloViewController.m"
-         timestampString = "387500981.396869"
+         timestampString = "387502253.012396"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "106"
-         endingLineNumber = "106"
+         startingLineNumber = "230"
+         endingLineNumber = "230"
          landmarkName = "-rdioPlayerChangedFromState:toState:"
          landmarkType = "5">
          <Actions>
@@ -72,11 +74,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "Yes"
          filePath = "Classes/HelloViewController.m"
-         timestampString = "387500997.945465"
+         timestampString = "387502241.480838"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "117"
-         endingLineNumber = "117"
+         startingLineNumber = "257"
+         endingLineNumber = "257"
          landmarkName = "-rdioPlayerQueueDidChange"
          landmarkType = "5">
          <Actions>
