@@ -130,22 +130,27 @@
 
             // Wait for 5 seconds
             NSLog(@"…and wait for 5 seconds");
-            double delayInSeconds = 5.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                NSLog(@"…then keep on playing");
-                _supposedToBePaused = NO;
-                [[self getPlayer] togglePause];
+            NSTimeInterval delayInSeconds = 5.0;
+            NSNumber *taskIDObject = [NSNumber numberWithLong:bgTaskId];
+            [self performSelector:@selector(attemptToResumePlaying:) withObject:taskIDObject afterDelay:delayInSeconds];
 
-                // End the background task; we should be playing audio again!
-                [[UIApplication sharedApplication] endBackgroundTask:bgTaskId];
-
-                // Stop logging background time remaining
-                [backgroundTimeLogTimer invalidate];
-            });
+            // Stop logging background time remaining separately,
+            // unless you want to write performSelector:withObject:withObject:afterDelay:
+            [backgroundTimeLogTimer performSelector:@selector(invalidate) withObject:nil afterDelay:delayInSeconds];
         }
     }
 }
+
+- (void)attemptToResumePlaying:(NSNumber *)taskToStop
+{
+  NSLog(@"...then keep on playing");
+  _supposedToBePaused = NO;
+  [[self getPlayer] togglePause];
+
+  // End the background task; we should be playing audio again!
+  [[UIApplication sharedApplication] endBackgroundTask:[taskToStop longValue]];
+}
+
 
 - (void)logBackroundTimeRemaining
 {
