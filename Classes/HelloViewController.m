@@ -9,6 +9,7 @@
     BOOL _paused;
     RDPlayer* _player;
     BOOL _supposedToBePaused;
+    UIBackgroundTaskIdentifier songBgTaskId;
 }
 
 @end
@@ -103,6 +104,15 @@
 {
     if ([keyPath isEqualToString:@"player.currentTrack"]) {
         int trackIndex = [[self getPlayer] currentTrackIndex];
+
+        UIBackgroundTaskIdentifier newSongBgTaskId = UIBackgroundTaskInvalid;
+        if (trackIndex < 4) {
+            // Let's request a new background task for the song that just started to play
+            newSongBgTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+        }
+        // Let's kill the background task for the song that just finished playing
+        if (songBgTaskId != UIBackgroundTaskInvalid) [[UIApplication sharedApplication] endBackgroundTask:songBgTaskId];
+        songBgTaskId = newSongBgTaskId;
 
         if (trackIndex == 1) { // We've hit track two
             NSLog(@"We've hit track two!");
@@ -250,6 +260,14 @@
         NSLog(@"Forcing a pause, since the player didn't listen the first time, throwing \"AudioQueuePause err \\316\\377\\377\\377 -50\" instead");
         [[self getPlayer] togglePause];
     }];
+}
+
+- (BOOL)rdioPlayerCouldNotStreamTrack:(NSString *)trackKey
+{
+    NSLog(@"Trying to recussitate playback…");
+    [[self getPlayer] playAndRestart:YES];
+    
+    return YES;
 }
 
 @end
