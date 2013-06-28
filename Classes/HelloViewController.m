@@ -8,6 +8,7 @@
     BOOL _playing;
     BOOL _paused;
     RDPlayer* _player;
+    BOOL _supposedToBePaused;
 }
 
 @end
@@ -44,11 +45,20 @@
     [rdioLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [rdioLabel setTextAlignment:NSTextAlignmentCenter];
 
+    CGRect instructionsFrame = CGRectMake(20, 180, appFrame.size.width - 40, 200);
+    UILabel *instructionsLabel = [[UILabel alloc] initWithFrame:instructionsFrame];
+    [instructionsLabel setText:@"Pressing play should play the first track, pause just before the second track, wait 5 seconds, then continue. Try this first with the app in the foreground. Works, right? Restart the app, and try again, this time sending the app to the background using the home button after pressing play. Watch the console for an AudioQueueStart error.\n\nThis test case does not require that you log in."];
+    [instructionsLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    instructionsLabel.numberOfLines = 0;
+    instructionsLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+
     [view addSubview:_playButton];
     [view addSubview:_loginButton];
     [view addSubview:rdioLabel];
+    [view addSubview:instructionsLabel];
 
     [rdioLabel release];
+    [instructionsLabel release];
 
     self.view = view;
     [view release];
@@ -69,6 +79,68 @@
     Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
     sharedRdio.delegate = self;
     sharedRdio.player.delegate = self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    // Watch for track changes so that we can pause between track one and two
+    [self addObserver:self forKeyPath:@"player.currentTrack" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // Remove observers
+    [self removeObserver:self forKeyPath:@"player.currentTrack" context:nil];
+
+    [super viewDidDisappear:animated];
+}
+
+# pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"player.currentTrack"]) {
+        int trackIndex = [[self getPlayer] currentTrackIndex];
+
+        if (trackIndex == 1) { // We've hit track two
+            NSLog(@"We've hit track two!");
+
+            // Let's start a background task while we're about to muck around, not playing audio
+            UIBackgroundTaskIdentifier bgTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+
+            // Log how much background time we have left every second, just to prove that this bug doesn't have to do with running out of background execution time
+            NSTimer *backgroundTimeLogTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(logBackroundTimeRemaining) userInfo:nil repeats:YES];
+
+            // Let's pause
+            NSLog(@"Let's pause here.");
+            _supposedToBePaused = YES;
+            [[self getPlayer] togglePause]; // On an unrelated note – why does this throw: AudioQueuePause err \316\377\377\377 -50
+
+            // Wait for 5 seconds
+            NSLog(@"…and wait for 5 seconds");
+            double delayInSeconds = 5.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                NSLog(@"…then keep on playing");
+                _supposedToBePaused = NO;
+                [[self getPlayer] togglePause];
+
+                // End the background task; we should be playing audio again!
+                [[UIApplication sharedApplication] endBackgroundTask:bgTaskId];
+
+                // Stop logging background time remaining
+                [backgroundTimeLogTimer invalidate];
+            });
+        }
+    }
+}
+
+- (void)logBackroundTimeRemaining
+{
+    // How much background execution time do we have left?
+    NSLog(@"%f seconds left to execute in the background", [[UIApplication sharedApplication] backgroundTimeRemaining]);
 }
 
 #pragma mark - Screen Rotation
@@ -169,6 +241,15 @@
     } else {
         [_playButton setTitle:@"Pause" forState:UIControlStateNormal];
     }
+    // We asked the player to pause, but it's not listening.
+    // Possibly related to https://github.com/rdio/api/issues/64
+    // Pause!
+    if (_supposedToBePaused && !_paused) [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (!_supposedToBePaused) return;
+
+        NSLog(@"Forcing a pause, since the player didn't listen the first time, throwing \"AudioQueuePause err \\316\\377\\377\\377 -50\" instead");
+        [[self getPlayer] togglePause];
+    }];
 }
 
 @end
